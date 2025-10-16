@@ -1,17 +1,16 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import ProductsAll from './src/screens/ProductsAll';
+import { View, Text, Image } from "react-native";
 
 function Card(props) {
-  const producto = props.data;
-
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: producto.image }} style={styles.image} />
-      <Text style={styles.title}>{producto.title}</Text>
-      <Text>Precio: {producto.price}</Text>
-      <Text>Categoría: {producto.category}</Text>
-      <Text style={styles.description}>{producto.description}</Text>
+    <View>
+      <Image 
+      source={{ uri: props.data.image }} 
+      resizeMode='contain'/>
+      <Text>{props.data.title}</Text>
+      <Text>Precio: {props.data.price}</Text>
+      <Text>Categoría: {props.data.category}</Text>
+      <Text>{props.data.description}</Text>
     </View>
   );
 }

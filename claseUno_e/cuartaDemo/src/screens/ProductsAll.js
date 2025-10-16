@@ -114,8 +114,8 @@ class ProductsAll extends Component {
 
   render() {
     return (
-      <View>
-         <Text style={styles.titulo}>Lista de Productos</Text>
+      <View style={styles.flatlist}>
+         <Text>Lista de Productos</Text>
         <FlatList
           data={this.state.lista}
           keyExtractor={(item) => item.id.toString()}
@@ -126,11 +126,9 @@ class ProductsAll extends Component {
   }
 }
 const styles = StyleSheet.create({
-  titulo: {
-    fontWeight: 'bold', 
-    fontSize: 18,      
-    marginBottom: 10,   
-    textAlign: 'center' 
+  flatlist: {
+    width:'100%',
+    flex:1
   },
 });
 
