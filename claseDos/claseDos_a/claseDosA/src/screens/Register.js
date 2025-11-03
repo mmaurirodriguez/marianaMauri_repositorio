@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
+//siemore ajustar esta ruta para que lleve a la confug de firebase
+import { auth } from '../firebase/config';
 
 class Register extends Component {
   constructor(props) {
@@ -7,14 +9,20 @@ class Register extends Component {
     this.state = {
       email: '',
       userName: '',      
-      password: ''
+      password: '',
+      registered:false,
+      error:''
     };
   }
-
-  onSubmit() {
-    console.log('Email:', this.state.email);
-    console.log('UserName:', this.state.userName);    
-    console.log('Password:', this.state.password);
+  onSubmit(email, password) {
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(response => {
+        this.setState({ registered: true });
+        this.props.navigation.navigate('Login');
+      })
+      .catch(error => {
+        this.setState({ error: 'Fallo en el registro.' });
+      });
   }
 
   render() {
@@ -47,7 +55,7 @@ class Register extends Component {
           style={styles.input}
         />
 
-        <Pressable onPress={() => this.onSubmit()}>
+        <Pressable onPress={() => this.onSubmit(this.state.email,this.state.password)}>
           <Text style={styles.button}>Registrate</Text>
         </Pressable>
 
@@ -62,7 +70,7 @@ class Register extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f6', // rosa pastel muy suave
+    backgroundColor: '#fff0f6', 
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#e91e63', // rosa fuerte para resaltar el título
+    color: '#e91e63', 
     marginBottom: 20,
   },
   input: {
@@ -80,13 +88,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#f8bbd0', // borde rosa claro
+    borderColor: '#f8bbd0', 
     borderRadius: 8,
-    backgroundColor: '#ffffff', // fondo blanco limpio
+    backgroundColor: '#ffffff', 
     marginVertical: 10,
   },
   button: {
-    backgroundColor: '#ec407a', // rosa medio para contraste
+    backgroundColor: '#ec407a', 
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -100,7 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   link: {
-    color: '#d81b60', // tono fucsia
+    color: '#d81b60', 
     marginTop: 12,
     fontWeight: '600',
   },

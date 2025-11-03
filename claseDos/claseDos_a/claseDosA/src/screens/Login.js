@@ -1,19 +1,44 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
+//siemore ajustar esta ruta para que lleve a la confug de firebase
+import { auth } from '../firebase/config';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      loggedIn:false,
+      error:''
     };
   }
+  // preguntar si puedo poner un ALERT para que se vea en mi pantalla y no solo por consola
+  onSubmit(email, password) {
+    if (!email.includes("@")) {
+      this.setState({ error: 'Email mal formateado' })
+        console.log('Email mal formateado');
+      return
+    }
+    if (password.length < 6) {
+      this.setState({ error: 'Password debe tener minimo 6 caracteres' })
+       console.log('La contrasenia debe tener mínimo 6 caracteres');
+      return
+    }
+    auth.signInWithEmailAndPassword(email, password)
+      .then((response) => {
+        this.setState({ loggedIn: true });
+         console.log('Usuario logueado:', response.user.email);
+        this.props.navigation.navigate('HomeMenu', { screen: 'Home' })
+      })
+      .catch(error => {
+        this.setState({ error: 'Credenciales inválidas.' })
+         console.log('Credenciales inválidas:', error.message);
 
-  onSubmit() {
-    console.log('Email:', this.state.email);
-    console.log('Password:', this.state.password);
-  }
+      })
+  };
+
+
 
   render() {
     return (
@@ -37,7 +62,7 @@ class Login extends Component {
           style={styles.input}
         />
 
-        <Pressable onPress={() => this.onSubmit()}>
+        <Pressable onPress={() => this.onSubmit(this.state.email, this.state.password)}>
           <Text style={styles.button}>Login</Text>
         </Pressable>
 
@@ -56,7 +81,7 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f6', // fondo rosa pastel
+    backgroundColor: '#fff0f6', 
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
@@ -65,7 +90,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#e91e63', // rosa fuerte
+    color: '#e91e63', 
     marginBottom: 20,
   },
   input: {
@@ -74,13 +99,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#f8bbd0', // borde rosa claro
+    borderColor: '#f8bbd0', 
     borderRadius: 8,
-    backgroundColor: '#ffffff', // fondo blanco
+    backgroundColor: '#ffffff', 
     marginVertical: 10,
   },
   button: {
-    backgroundColor: '#ec407a', // rosa medio
+    backgroundColor: '#ec407a', 
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -94,7 +119,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   link: {
-    color: '#d81b60', // fucsia
+    color: '#d81b60', 
     marginTop: 12,
     fontWeight: '600',
   },
