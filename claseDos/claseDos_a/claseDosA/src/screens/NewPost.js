@@ -16,9 +16,10 @@ class NewPost extends Component {
             this.setState({ error: 'El mensaje no puede estar vacío.' });
         } else {
             db.collection('posts').add({
-                owner: auth.currentUser.email,
+                email: auth.currentUser.email,
                 mensaje: this.state.mensaje,
                 createdAt: Date.now(),
+                like:[]
             })
                 .then(() => {
                     console.log('Post guardado en Firestore');
@@ -39,7 +40,6 @@ class NewPost extends Component {
                 <TextInput
                     style={styles.input}
                     placeholder="Escribí tu mensaje..."
-                    multiline={true}
                     onChangeText={(text) => this.setState({ mensaje: text })}
                     value={this.state.mensaje}
                 />

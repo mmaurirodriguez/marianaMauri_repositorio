@@ -13,7 +13,7 @@ class Login extends Component {
       error:''
     };
   }
-  // preguntar si puedo poner un ALERT para que se vea en mi pantalla y no solo por consola
+  
   onSubmit(email, password) {
     if (!email.includes("@")) {
       this.setState({ error: 'Email mal formateado' })
@@ -28,9 +28,6 @@ class Login extends Component {
     auth.signInWithEmailAndPassword(email, password)
       .then((response) => {
         this.setState({ loggedIn: true });
-
-
-        
          console.log('Usuario logueado:', response.user.email);
         this.props.navigation.navigate('HomeMenu', { screen: 'Home' })
       })
@@ -55,7 +52,7 @@ class Login extends Component {
           value={this.state.email}
           style={styles.input}
         />
-
+        <Text>{this.state.error}</Text>
         <TextInput
           keyboardType="default"
           placeholder="Password"
