@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 //siemore ajustar esta ruta para que lleve a la confug de firebase
-import { auth } from '../firebase/config';
+import { auth, db} from '../firebase/config';
 
 class Login extends Component {
   constructor(props) {
@@ -28,6 +28,9 @@ class Login extends Component {
     auth.signInWithEmailAndPassword(email, password)
       .then((response) => {
         this.setState({ loggedIn: true });
+
+
+        
          console.log('Usuario logueado:', response.user.email);
         this.props.navigation.navigate('HomeMenu', { screen: 'Home' })
       })

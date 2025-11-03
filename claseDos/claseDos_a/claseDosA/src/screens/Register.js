@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput } from 'react-native';
 //siemore ajustar esta ruta para que lleve a la confug de firebase
-import { auth } from '../firebase/config';
+import { auth, db } from '../firebase/config';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      userName: '',      
+      userName: '',
       password: '',
-      registered:false,
-      error:''
+      registered: false,
+      error: ''
     };
   }
-  onSubmit(email, password) {
+  onSubmit(email, password, userName) {
     auth.createUserWithEmailAndPassword(email, password)
       .then(response => {
+        db.collection('users').add({
+          email: auth.currentUser.email,
+          userName: this.state.userName,
+          createdAt: Date.now(),
+        })
+          .catch(e => console.log(e));
+
         this.setState({ registered: true });
         this.props.navigation.navigate('Login');
       })
@@ -55,7 +62,7 @@ class Register extends Component {
           style={styles.input}
         />
 
-        <Pressable onPress={() => this.onSubmit(this.state.email,this.state.password)}>
+        <Pressable onPress={() => this.onSubmit(this.state.email, this.state.password, this.state.userName)}>
           <Text style={styles.button}>Registrate</Text>
         </Pressable>
 
@@ -70,7 +77,7 @@ class Register extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff0f6', 
+    backgroundColor: '#fff0f6',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
@@ -79,7 +86,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#e91e63', 
+    color: '#e91e63',
     marginBottom: 20,
   },
   input: {
@@ -88,13 +95,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: '#f8bbd0', 
+    borderColor: '#f8bbd0',
     borderRadius: 8,
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
     marginVertical: 10,
   },
   button: {
-    backgroundColor: '#ec407a', 
+    backgroundColor: '#ec407a',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   link: {
-    color: '#d81b60', 
+    color: '#d81b60',
     marginTop: 12,
     fontWeight: '600',
   },
