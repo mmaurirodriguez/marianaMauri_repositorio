@@ -2,11 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet,Pressable } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Foundation from '@expo/vector-icons/Foundation';
+import DynamicForm from '../components/DynamicForm';
 function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.centerText}>Hello World</Text>
+      <DynamicForm/>
     </View>
+    
   );
   
 }
